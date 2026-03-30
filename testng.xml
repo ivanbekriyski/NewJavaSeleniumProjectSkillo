@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Skillo Suite">
+
+    <listeners>
+        <listener class-name="org.ivan.listeners.ScreenshotListener"/>
+    </listeners>
+
+    <test name="All Tests">
+        <classes>
+            <class name="org.ivan.tests.LoginTests"/>
+            <class name="org.ivan.tests.PostTests"/>
+            <class name="org.ivan.tests.ProfileTests"/>
+        </classes>
+    </test>
+
+</suite>
