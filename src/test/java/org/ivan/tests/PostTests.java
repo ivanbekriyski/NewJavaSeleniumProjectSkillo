@@ -17,17 +17,16 @@ public class PostTests extends BaseTest {
     @Test
     public void postsAreVisibleOnHomePage() throws Exception {
         LoginPage login = new LoginPage(driver);
-        login.openLoginPage();
+        login.open();
         login.login("bekriiski", "Bekriiski5");
 
-        Thread.sleep(3000);
         System.out.println("CURRENT URL AFTER LOGIN = " + driver.getCurrentUrl());
     }
 
     @Test
-    public void openPostDetailsPage() {
+    public void shouldOpenPostDetailsWhenUserClicksOnPost() {
         LoginPage login = new LoginPage(driver);
-        login.openLoginPage();
+        login.open();
         login.login("bekriiski", "Bekriiski5");
         login.waitForSuccessfulLogin();
 
@@ -38,31 +37,46 @@ public class PostTests extends BaseTest {
     }
 
     @Test
-    public void likeLoraPost() throws InterruptedException {
+    public void likeLoraPost() {
         LoginPage login = new LoginPage(driver);
-        login.openLoginPage();
+        login.open();
         login.login("bekriiski", "Bekriiski5");
         login.waitForSuccessfulLogin();
 
-        Thread.sleep(2000);
-
         SearchPage search = new SearchPage(driver);
-
-        Thread.sleep(1500);
-
         search.searchUser("Lora");
-
         search.openUser("Lora");
 
-
-         UserProfilePage userProfile = new UserProfilePage(driver);
-         userProfile.openPost();
+        UserProfilePage userProfile = new UserProfilePage(driver);
+        userProfile.openPost();
 
         PostDetailsPage post = new PostDetailsPage(driver);
 
         int before = post.getLikesCount();
-        post.clickLikeButton();
-        Thread.sleep(1500);
+        post.clickLike();
+        int after = post.getLikesCount();
+
+        Assert.assertTrue(after > before, "Like count did not increase!");
+    }
+
+    @Test
+    public void userCanLikeAnotherUsersPost() {
+        LoginPage login = new LoginPage(driver);
+        login.open();
+        login.login("bekriiski", "Bekriiski5");
+        login.waitForSuccessfulLogin();
+
+        SearchPage search = new SearchPage(driver);
+        search.searchUser("Lora");
+        search.openUser("Lora");
+
+        ProfilePage profile = new ProfilePage(driver);
+        profile.openPostByIndex(0);
+
+        PostDetailsPage post = new PostDetailsPage(driver);
+
+        int before = post.getLikesCount();
+        post.clickLike();
         int after = post.getLikesCount();
 
         Assert.assertTrue(after > before, "Like count did not increase!");

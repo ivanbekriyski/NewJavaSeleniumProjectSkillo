@@ -3,33 +3,28 @@ package org.ivan.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+import java.util.List;
 
-public class ProfilePage {
+public class ProfilePage extends BasePage {
 
-    private WebDriver driver;
-    private WebDriverWait wait;
-
-    private By profileUsername = By.xpath("//h2");
-
-    private By firstPost = By.cssSelector("img[src='https://i.imgur.com/y5CdE46.jpg']");
+    private By profileUsername = By.cssSelector("h2");
+    private By posts = By.cssSelector("img[src*='imgur']");
+    public void openPostByIndex(int index) {
+        List<WebElement> allPosts = waitForAllVisible(posts);
+        allPosts.get(index).click();
+    }
 
     public ProfilePage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        super(driver);
     }
 
     public String getProfileUsername() {
-        WebElement username = wait.until(ExpectedConditions.visibilityOfElementLocated(profileUsername));
-        return username.getText().trim();
+        return waitForVisible(profileUsername).getText();
     }
 
-
-    public void openFirstPost() {
-        WebElement post = wait.until(ExpectedConditions.elementToBeClickable(firstPost));
-        post.click();
+    public int getPostsCount() {
+        waitForVisible(posts);
+        return driver.findElements(posts).size();
     }
 }

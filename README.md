@@ -1,9 +1,9 @@
 # JavaSeleniumProjectSkillo
 
-Автоматизиран тестов проект върху сайта:
+Automated test project on the site:
 http://training.skillo-bg.com:4300/posts/all
 
-## Технологии
+## Technologies
 - Java 24
 - Maven
 - Selenium WebDriver
@@ -11,24 +11,24 @@ http://training.skillo-bg.com:4300/posts/all
 - Page Object Model + PageFactory
 - WebDriverManager
 
-## Структура
-- core – базови класове (DriverFactory, BaseTest)
-- pages – Page Object модели
-- listeners – TestNG listener за screenshot при fail
-- tests – TestNG тестове
+## Structure
+- core – base classes (DriverFactory, BaseTest)
+- pages – Page Object models
+- listeners – TestNG listener for screenshots when fail
+- tests – TestNG tests
 - testng.xml – TestNG suite
-- screenshots – снимки при failed тестове
+- screenshots – images when test failed
 
-## Тестови сценарии
+## Test scenarios
 
-1. Успешен логин
-2. Грешен логин → грешка
-3. Проверка, че има постове
-4. Отваряне на детайли на пост
-5. Like увеличава броя
-6. Отваряне на профил
-7. Успешен логаут
+1. Successful login
+2. Unsuccessful login → error
+3. Checking for posts
+4. Open post details
+5. Like increase 
+6. Open profile
+7. Successful logout
 
 
-## Стартиране
+## Start
 Run → testng.xml

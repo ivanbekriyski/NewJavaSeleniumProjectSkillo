@@ -8,28 +8,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class UserProfilePage {
+public class UserProfilePage extends BasePage {
+
+    public UserProfilePage(WebDriver driver) {
+        super(driver);
+    }
 
     private WebDriver driver;
     private WebDriverWait wait;
 
     private By onlyPostImage = By.xpath("//img[contains(@src,'imgur')]");
 
-    public UserProfilePage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
-
-    private By firstPost = By.cssSelector("img[src='https://i.imgur.com/y5CdE46.jpg']");
-
-    public void openFirstPost() {
-        WebElement post = wait.until(ExpectedConditions.elementToBeClickable(firstPost));
-        post.click();
-    }
-
+    private By posts = By.cssSelector("img[src*='imgur']");
     public void openPost() {
-        WebElement post = wait.until(ExpectedConditions.elementToBeClickable(onlyPostImage));
-        post.click();
+        waitForClickable(posts).click();
     }
 }
 

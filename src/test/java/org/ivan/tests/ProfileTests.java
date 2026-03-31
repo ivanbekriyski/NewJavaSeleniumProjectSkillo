@@ -12,7 +12,7 @@ public class ProfileTests extends BaseTest {
     @Test
     public void openProfilePage() {
         LoginPage login = new LoginPage(driver);
-        login.openLoginPage();
+        login.open();
         login.login("bekriiski", "Bekriiski5");
 
         HomePage home = new HomePage(driver);

@@ -11,15 +11,20 @@ public class LogoutTests extends BaseTest {
 
     @Test
     public void logoutSuccessfully() {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage login = new LoginPage(driver);
+        login.open();
+        login.login("bekriiski", "Bekriiski5");
+        login.waitForSuccessfulLogin();
+
         HeaderPage header = new HeaderPage(driver);
-
-        loginPage.openLoginPage();
-        loginPage.login("bekriiski", "Bekriiski5");
-        loginPage.waitForSuccessfulLogin();
-
         header.logout();
 
-        Assert.assertTrue(driver.getCurrentUrl().contains("/users/login"));
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.waitForLoginPageUrl();
+
+        Assert.assertTrue(
+                driver.getCurrentUrl().contains("/users/login"),
+                "Logout was not successful!"
+        );
     }
 }
