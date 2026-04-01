@@ -2,13 +2,22 @@ package org.ivan.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends BasePage {
 
-    private By usernameInput = By.id("defaultLoginFormUsername");
-    private By passwordInput = By.id("defaultLoginFormPassword");
-    private By signInButton = By.id("sign-in-button");
-    private By errorToast = By.cssSelector("div.toast-error");
+    @FindBy(id = "defaultLoginFormUsername")
+    private WebElement usernameInput;
+
+    @FindBy(id = "defaultLoginFormPassword")
+    private WebElement passwordInput;
+
+    @FindBy(id = "sign-in-button")
+    private WebElement signInButton;
+
+    @FindBy(css = "div.toast-error")
+    private WebElement errorToast;
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -25,11 +34,7 @@ public class LoginPage extends BasePage {
     }
 
     public void waitForSuccessfulLogin() {
-        waitForClickable(By.id("search-bar"));
-    }
-
-    public void waitForLoginPageUrl() {
-        waitForUrlContains("/users/login");
+        waitForUrlContains("/posts/all");
     }
 
     public String getErrorToastMessage() {

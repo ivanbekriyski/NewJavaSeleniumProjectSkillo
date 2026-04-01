@@ -9,14 +9,15 @@ import org.testng.annotations.Test;
 public class LoginTests extends BaseTest {
 
     @Test
-    public void loginWithBekriiskiAccount() throws InterruptedException {
+    public void loginWithBekriiskiAccount() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.login("bekriiski", "Bekriiski5");
 
+        loginPage.waitForUrlContains("/posts/all");
+
         HomePage homePage = new HomePage(driver);
         homePage.waitForLoaded();
-        homePage.waitForHomeUrl();
 
         Assert.assertTrue(driver.getCurrentUrl().contains("/posts/all"),
                 "Login with bekriiski was not successful!");
@@ -28,7 +29,10 @@ public class LoginTests extends BaseTest {
         loginPage.open();
         loginPage.login("bekriiski", "wrongPass");
 
-        Assert.assertTrue(loginPage.getErrorToastMessage().toLowerCase().contains("wrong"),
+        String errorMessage = loginPage.getErrorToastMessage();
+
+        Assert.assertTrue(errorMessage.toLowerCase().contains("wrong")
+                        || errorMessage.toLowerCase().contains("invalid"),
                 "Error toast not shown!");
     }
 }

@@ -2,25 +2,22 @@ package org.ivan.tests;
 
 import org.ivan.core.BaseTest;
 import org.ivan.pages.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
-
 public class PostTests extends BaseTest {
 
-
-
     @Test
-    public void postsAreVisibleOnHomePage() throws Exception {
+    public void postsAreVisibleOnHomePage() {
         LoginPage login = new LoginPage(driver);
         login.open();
         login.login("bekriiski", "Bekriiski5");
+        login.waitForUrlContains("/posts/all");
 
-        System.out.println("CURRENT URL AFTER LOGIN = " + driver.getCurrentUrl());
+        HomePage home = new HomePage(driver);
+        home.waitForLoaded();
+
+        Assert.assertTrue(home.getPostsCount() > 0, "No posts are visible on the home page!");
     }
 
     @Test
@@ -28,47 +25,28 @@ public class PostTests extends BaseTest {
         LoginPage login = new LoginPage(driver);
         login.open();
         login.login("bekriiski", "Bekriiski5");
-        login.waitForSuccessfulLogin();
+        login.waitForUrlContains("/posts/all");
 
         HomePage home = new HomePage(driver);
         home.openFirstPost();
 
-        Assert.assertTrue(driver.getCurrentUrl().contains("/posts/"), "Post details did not open!");
+        Assert.assertTrue(driver.getCurrentUrl().contains("/posts/"),
+                "Post details did not open!");
     }
 
     @Test
-    public void likeLoraPost() {
+    public void likeKremKaramelPost() {
         LoginPage login = new LoginPage(driver);
         login.open();
         login.login("bekriiski", "Bekriiski5");
-        login.waitForSuccessfulLogin();
+        login.waitForUrlContains("/posts/all");
+
+        HomePage home = new HomePage(driver);
+        home.waitForLoaded();
 
         SearchPage search = new SearchPage(driver);
-        search.searchUser("Lora");
-        search.openUser("Lora");
-
-        UserProfilePage userProfile = new UserProfilePage(driver);
-        userProfile.openPost();
-
-        PostDetailsPage post = new PostDetailsPage(driver);
-
-        int before = post.getLikesCount();
-        post.clickLike();
-        int after = post.getLikesCount();
-
-        Assert.assertTrue(after > before, "Like count did not increase!");
-    }
-
-    @Test
-    public void userCanLikeAnotherUsersPost() {
-        LoginPage login = new LoginPage(driver);
-        login.open();
-        login.login("bekriiski", "Bekriiski5");
-        login.waitForSuccessfulLogin();
-
-        SearchPage search = new SearchPage(driver);
-        search.searchUser("Lora");
-        search.openUser("Lora");
+        search.searchUser("KremKaramel");
+        search.openUser("KremKaramel");
 
         ProfilePage profile = new ProfilePage(driver);
         profile.openPostByIndex(0);
@@ -77,8 +55,36 @@ public class PostTests extends BaseTest {
 
         int before = post.getLikesCount();
         post.clickLike();
+        post.waitForLikesToChange(before);
         int after = post.getLikesCount();
 
         Assert.assertTrue(after > before, "Like count did not increase!");
+    }
+
+    @Test
+    public void commentOnKremKaramelPost() {
+        LoginPage login = new LoginPage(driver);
+        login.open();
+        login.login("bekriiski", "Bekriiski5");
+        login.waitForUrlContains("/posts/all");
+
+        HomePage home = new HomePage(driver);
+        home.waitForLoaded();
+
+        SearchPage search = new SearchPage(driver);
+        search.searchUser("KremKaramel");
+        search.openUser("KremKaramel");
+
+        ProfilePage profile = new ProfilePage(driver);
+        profile.openPostByIndex(0);
+
+        PostDetailsPage post = new PostDetailsPage(driver);
+
+        String comment = "Very nice post!";
+
+        post.addComment(comment);
+        post.waitForCommentToAppear(comment);
+
+        Assert.assertEquals(post.getLastComment(), comment, "Comment was not added!");
     }
 }

@@ -3,17 +3,31 @@ package org.ivan.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
 public class ProfilePage extends BasePage {
 
-    private By profileUsername = By.cssSelector("h2");
-    private By posts = By.cssSelector("img[src*='imgur']");
+    private By postImages = By.cssSelector("div.gallery-item div.post-img img");
+
     public void openPostByIndex(int index) {
-        List<WebElement> allPosts = waitForAllVisible(posts);
-        allPosts.get(index).click();
+
+        List<WebElement> posts = wait.until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(postImages)
+        );
+
+        WebElement post = posts.get(index);
+
+        waitForClickable(post).click();
     }
+
+    @FindBy(css = "h2")
+    private WebElement profileUsername;
+
+    @FindBy(css = "img[src*='imgur']")
+    private List<WebElement> posts;
 
     public ProfilePage(WebDriver driver) {
         super(driver);
@@ -24,7 +38,7 @@ public class ProfilePage extends BasePage {
     }
 
     public int getPostsCount() {
-        waitForVisible(posts);
-        return driver.findElements(posts).size();
+        return waitForAllVisible(posts).size();
     }
+
 }

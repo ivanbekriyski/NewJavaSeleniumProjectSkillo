@@ -14,11 +14,14 @@ public class ProfileTests extends BaseTest {
         LoginPage login = new LoginPage(driver);
         login.open();
         login.login("bekriiski", "Bekriiski5");
+        login.waitForUrlContains("/posts/all");
 
         HomePage home = new HomePage(driver);
         home.openProfile();
 
         ProfilePage profile = new ProfilePage(driver);
-        Assert.assertFalse(profile.getProfileUsername().isEmpty(), "Profile username is empty!");
+
+        Assert.assertFalse(profile.getProfileUsername().isEmpty(),
+                "Profile username is empty!");
     }
 }

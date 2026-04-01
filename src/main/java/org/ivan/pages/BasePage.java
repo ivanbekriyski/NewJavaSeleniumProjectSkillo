@@ -3,6 +3,7 @@ package org.ivan.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -17,34 +18,22 @@ public abstract class BasePage {
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
     }
 
-    protected WebElement waitForVisible(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    protected WebElement waitForVisible(WebElement element) {
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    protected WebElement waitForClickable(By locator) {
-        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    protected WebElement waitForClickable(WebElement element) {
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public List<WebElement> waitForAllVisible(By locator) {
-        return new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    protected List<WebElement> waitForAllVisible(List<WebElement> elements) {
+        return wait.until(ExpectedConditions.visibilityOfAllElements(elements));
     }
 
     public void waitForUrlContains(String text) {
         wait.until(ExpectedConditions.urlContains(text));
-    }
-
-    public void typeSlowly(WebElement element, String text) {
-        for (char c : text.toCharArray()) {
-            element.sendKeys(String.valueOf(c));
-
-            new WebDriverWait(driver, Duration.ofSeconds(1))
-                    .until(ExpectedConditions.or(
-                            ExpectedConditions.presenceOfElementLocated(By.cssSelector("a.post-user")),
-                            ExpectedConditions.attributeContains(element, "value", String.valueOf(c))
-                    ));
-        }
     }
 }

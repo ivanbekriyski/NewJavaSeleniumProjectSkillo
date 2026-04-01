@@ -3,7 +3,6 @@ package org.ivan.core;
 import org.ivan.listeners.ScreenshotListener;
 import org.ivan.listeners.WebDriverProvider;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
@@ -15,16 +14,14 @@ public class BaseTest implements WebDriverProvider {
 
     @BeforeMethod
     public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        DriverFactory.initDriver();
+        driver = DriverFactory.getDriver();
         driver.get("http://training.skillo-bg.com:4300");
     }
 
     @AfterMethod
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        DriverFactory.quitDriver();
     }
 
     @Override

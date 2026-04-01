@@ -1,7 +1,5 @@
 package org.ivan.listeners;
 
-import org.ivan.core.BaseTest;
-import org.ivan.core.DriverFactory;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -11,10 +9,7 @@ import org.testng.ITestResult;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class ScreenshotListener implements ITestListener {
 
@@ -37,6 +32,5 @@ public class ScreenshotListener implements ITestListener {
         }
 
         System.out.println("Screenshot saved: " + dest.getAbsolutePath());
-        System.out.println(">>> onTestFailure triggered for: " + result.getName());
     }
 }

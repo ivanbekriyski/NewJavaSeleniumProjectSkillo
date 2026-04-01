@@ -1,18 +1,24 @@
 package org.ivan.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
 public class HomePage extends BasePage {
 
-    private By newPostButton = By.cssSelector("a[href='/posts/create']");
-    private By posts = By.cssSelector("div[class*='post']:not([class*='comment'])");
-    private By profileButton = By.id("nav-link-profile");
-    private By searchButton = By.id("nav-link-search");
+    @FindBy(css = "a[href='/posts/create']")
+    private WebElement newPostButton;
+
+    @FindBy(css = "div[class*='post']:not([class*='comment'])")
+    private List<WebElement> posts;
+
+    @FindBy(id = "nav-link-profile")
+    private WebElement profileButton;
+
+    @FindBy(id = "nav-link-search")
+    private WebElement searchButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -20,24 +26,18 @@ public class HomePage extends BasePage {
 
     public void waitForLoaded() {
         waitForVisible(newPostButton);
+        waitForVisible(profileButton);
     }
-
-    public void waitForHomeUrl() {
-        waitForUrlContains("/posts/all");
-    }
-
     public void openProfile() {
         waitForClickable(profileButton).click();
     }
 
     public int getPostsCount() {
-        waitForVisible(posts);
-        List<WebElement> allPosts = driver.findElements(posts);
-        return allPosts.size();
+        return waitForAllVisible(posts).size();
     }
 
     public void openFirstPost() {
-        waitForClickable(posts).click();
+        waitForClickable(posts.get(0)).click();
     }
 
     public void openSearch() {
