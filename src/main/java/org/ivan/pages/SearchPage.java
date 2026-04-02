@@ -1,6 +1,5 @@
 package org.ivan.pages;
 
-import org.ivan.pages.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -22,20 +21,13 @@ public class SearchPage extends BasePage {
     }
 
     public void searchUser(String username) {
-        waitForClickable(searchInput).clear();
-        searchInput.sendKeys(username);
+        type(searchInput, username);
 
-        wait.until(driver -> {
-            List<WebElement> results = driver.findElements(resultsLocator);
-            return results.size() > 0;
-        });
-
+        wait.until(driver -> driver.findElements(resultsLocator).size() > 0);
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(resultsLocator));
     }
 
     public void openUser(String username) {
-
-        By resultsLocator = By.cssSelector("a.post-user");
 
         for (int attempt = 0; attempt < 5; attempt++) {
             try {
@@ -43,32 +35,19 @@ public class SearchPage extends BasePage {
                         ExpectedConditions.visibilityOfAllElementsLocatedBy(resultsLocator)
                 );
 
-                System.out.println("=== SEARCH RESULTS ===");
-                for (WebElement user : results) {
-                    System.out.println("RESULT: [" + user.getText() + "]");
-                }
-                System.out.println("======================");
-
                 for (WebElement user : results) {
                     if (user.getText().trim().equals(username)) {
-
-                        waitForClickable(user).click();
-
+                        click(user);
                         waitForUrlContains("/users/");
-
                         return;
                     }
                 }
 
                 wait.until(ExpectedConditions.stalenessOf(results.get(0)));
 
-            } catch (StaleElementReferenceException e) {
-                System.out.println("Stale element detected, retrying... attempt " + attempt);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (StaleElementReferenceException ignored) {}
         }
 
-        throw new RuntimeException("User '" + username + "' not found or could not be clicked!");
+        throw new RuntimeException("User '" + username + "' not found!");
     }
-    }
+}

@@ -29,7 +29,7 @@ public class HomePage extends BasePage {
         waitForVisible(profileButton);
     }
     public void openProfile() {
-        waitForClickable(profileButton).click();
+        click(profileButton);
     }
 
     public int getPostsCount() {
@@ -37,10 +37,10 @@ public class HomePage extends BasePage {
     }
 
     public void openFirstPost() {
-        waitForClickable(posts.get(0)).click();
+        click(posts.get(0));
     }
 
     public void openSearch() {
-        waitForClickable(searchButton).click();
+        click(searchButton);
     }
 }

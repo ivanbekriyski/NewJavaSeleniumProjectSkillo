@@ -14,6 +14,6 @@ public class HeaderPage extends BasePage {
     }
 
     public void logout() {
-        waitForClickable(logoutIcon).click();
+        click(logoutIcon);
     }
 }

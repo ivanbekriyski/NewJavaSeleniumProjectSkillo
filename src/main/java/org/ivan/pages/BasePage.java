@@ -1,6 +1,5 @@
 package org.ivan.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -21,12 +20,21 @@ public abstract class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    protected WebElement waitForVisible(WebElement element) {
-        return wait.until(ExpectedConditions.visibilityOf(element));
+    protected void click(WebElement element) {
+        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    }
+
+    protected void type(WebElement element, String text) {
+        wait.until(ExpectedConditions.visibilityOf(element)).clear();
+        element.sendKeys(text);
     }
 
     protected WebElement waitForClickable(WebElement element) {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    protected WebElement waitForVisible(WebElement element) {
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     protected List<WebElement> waitForAllVisible(List<WebElement> elements) {

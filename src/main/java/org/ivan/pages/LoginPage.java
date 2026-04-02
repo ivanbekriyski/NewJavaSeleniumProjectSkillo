@@ -28,9 +28,9 @@ public class LoginPage extends BasePage {
     }
 
     public void login(String username, String password) {
-        waitForVisible(usernameInput).sendKeys(username);
-        waitForVisible(passwordInput).sendKeys(password);
-        waitForClickable(signInButton).click();
+        type(usernameInput, username);
+        type(passwordInput, password);
+        click(signInButton);
     }
 
     public void waitForSuccessfulLogin() {

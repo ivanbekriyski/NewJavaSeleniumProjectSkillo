@@ -12,17 +12,6 @@ public class ProfilePage extends BasePage {
 
     private By postImages = By.cssSelector("div.gallery-item div.post-img img");
 
-    public void openPostByIndex(int index) {
-
-        List<WebElement> posts = wait.until(
-                ExpectedConditions.visibilityOfAllElementsLocatedBy(postImages)
-        );
-
-        WebElement post = posts.get(index);
-
-        waitForClickable(post).click();
-    }
-
     @FindBy(css = "h2")
     private WebElement profileUsername;
 
@@ -33,6 +22,13 @@ public class ProfilePage extends BasePage {
         super(driver);
     }
 
+    public void openPostByIndex(int index) {
+        List<WebElement> images = wait.until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(postImages)
+        );
+        click(images.get(index));
+    }
+
     public String getProfileUsername() {
         return waitForVisible(profileUsername).getText();
     }
@@ -40,5 +36,4 @@ public class ProfilePage extends BasePage {
     public int getPostsCount() {
         return waitForAllVisible(posts).size();
     }
-
 }

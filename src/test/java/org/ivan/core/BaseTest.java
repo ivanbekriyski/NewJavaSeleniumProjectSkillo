@@ -2,15 +2,26 @@ package org.ivan.core;
 
 import org.ivan.listeners.ScreenshotListener;
 import org.ivan.listeners.WebDriverProvider;
+import org.ivan.pages.core.DriverFactory;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
+
+import java.io.File;
 
 @Listeners(ScreenshotListener.class)
 public class BaseTest implements WebDriverProvider {
 
     protected WebDriver driver;
+
+    @BeforeSuite
+    public void cleanScreenshots() {
+        File folder = new File("screenshots");
+        if (folder.exists()) {
+            for (File file : folder.listFiles()) {
+                file.delete();
+            }
+        }
+    }
 
     @BeforeMethod
     public void setUp() {

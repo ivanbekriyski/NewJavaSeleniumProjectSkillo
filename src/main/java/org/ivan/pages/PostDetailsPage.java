@@ -23,17 +23,16 @@ public class PostDetailsPage extends BasePage {
     }
 
     public int getLikesCount() {
-        String text = waitForVisible(likesCount).getText(); // "8 likes"
+        String text = waitForVisible(likesCount).getText();
         return Integer.parseInt(text.split(" ")[0]);
     }
 
     public void clickLike() {
-        waitForClickable(likeButton).click();
+        click(likeButton);
     }
 
     public boolean isLiked() {
-        String classes = likeButton.getAttribute("class");
-        return classes.contains("fas");
+        return likeButton.getAttribute("class").contains("fas");
     }
 
     public void waitForLikesToChange(int before) {
@@ -44,16 +43,14 @@ public class PostDetailsPage extends BasePage {
     }
 
     public void addComment(String text) {
-        waitForVisible(commentInput).clear();
-        commentInput.sendKeys(text + Keys.ENTER);
+        type(commentInput, text + Keys.ENTER);
     }
 
     public void waitForCommentToAppear(String text) {
         wait.until(driver -> {
             List<WebElement> comments = driver.findElements(commentLocator);
             if (comments.isEmpty()) return false;
-            String last = comments.get(comments.size() - 1).getText().trim();
-            return last.equals(text);
+            return comments.get(comments.size() - 1).getText().trim().equals(text);
         });
     }
 

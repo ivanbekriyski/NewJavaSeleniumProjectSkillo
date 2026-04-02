@@ -15,7 +15,6 @@ The framework follows the *Page Object Model (POM)* design pattern and uses *Pag
 - Maven
 - Selenium WebDriver
 - TestNG
-- WebDriverManager
 - Page Object Model (POM)
 - PageFactory
 - TestNG Listeners (screenshots on failure)
